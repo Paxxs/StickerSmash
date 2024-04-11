@@ -1,4 +1,4 @@
-import { Image, View, type ImageSourcePropType } from "react-native";
+import type { ViewStyle, ImageSourcePropType } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,
@@ -13,9 +13,9 @@ export default function EmojiSticker({
   imageSize: number;
   stickerSource: ImageSourcePropType;
 }) {
-  const scaleImage = useSharedValue(imageSize);
-  const translateX = useSharedValue(0);
-  const translateY = useSharedValue(0);
+  const scaleImage = useSharedValue<number>(imageSize);
+  const translateX = useSharedValue<number>(0);
+  const translateY = useSharedValue<number>(0);
 
   const doubleTapped = Gesture.Tap()
     .numberOfTaps(2)
@@ -40,7 +40,7 @@ export default function EmojiSticker({
           translateY: translateY.value,
         },
       ],
-    };
+    } as ViewStyle; //https://github.com/facebook/react-native/issues/41869#issuecomment-1868278536
   });
 
   const imageStyle = useAnimatedStyle(() => {

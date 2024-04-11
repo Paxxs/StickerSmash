@@ -47,45 +47,39 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <View style={styles.container}>
-        <View style={styles.imageContainer}>
-          <ImageViewer
-            placeholderImageSource={PlaceholderImage}
-            selectedImage={selectImage}
-          />
-          {pickedEmoji && (
-            <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
-          )}
-        </View>
-        {showAppOptions ? (
-          <View style={styles.optionButtonRow}>
-            <IconButton label="Rest" icon="refresh" onPress={onRest} />
-            <CircleButton onPress={onAddSticker} />
-            <IconButton
-              label="Rest"
-              icon="save-alt"
-              onPress={onSaveImageAsync}
-            />
-          </View>
-        ) : (
-          <View style={styles.footerContainer}>
-            <Button
-              label="Choose a photo"
-              icon="picture-o"
-              primary
-              onPress={pickImageAsync}
-            />
-            <Button
-              label="Use this photo"
-              onPress={() => setShowAppOptions(true)}
-            />
-          </View>
+      <View style={styles.imageContainer}>
+        <ImageViewer
+          placeholderImageSource={PlaceholderImage}
+          selectedImage={selectImage}
+        />
+        {pickedEmoji && (
+          <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
         )}
-        <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
-          <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
-        </EmojiPicker>
-        <StatusBar style="auto" />
       </View>
+      {showAppOptions ? (
+        <View style={styles.optionButtonRow}>
+          <IconButton label="Rest" icon="refresh" onPress={onRest} />
+          <CircleButton onPress={onAddSticker} />
+          <IconButton label="Rest" icon="save-alt" onPress={onSaveImageAsync} />
+        </View>
+      ) : (
+        <View style={styles.footerContainer}>
+          <Button
+            label="Choose a photo"
+            icon="picture-o"
+            primary
+            onPress={pickImageAsync}
+          />
+          <Button
+            label="Use this photo"
+            onPress={() => setShowAppOptions(true)}
+          />
+        </View>
+      )}
+      <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
+        <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
+      </EmojiPicker>
+      <StatusBar style="auto" />
     </GestureHandlerRootView>
   );
 }
