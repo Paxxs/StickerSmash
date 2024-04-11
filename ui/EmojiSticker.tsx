@@ -14,6 +14,8 @@ export default function EmojiSticker({
   stickerSource: ImageSourcePropType;
 }) {
   const scaleImage = useSharedValue(imageSize);
+  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
 
   const doubleTapped = Gesture.Tap()
     .numberOfTaps(2)
@@ -23,6 +25,24 @@ export default function EmojiSticker({
       }
     });
 
+  const drag = Gesture.Pan().onChange((e) => {
+    translateX.value += e.changeX;
+    translateY.value += e.changeY;
+  });
+
+  const containerStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateX: translateX.value,
+        },
+        {
+          translateY: translateY.value,
+        },
+      ],
+    };
+  });
+
   const imageStyle = useAnimatedStyle(() => {
     return {
       width: withSpring(scaleImage.value),
@@ -30,14 +50,16 @@ export default function EmojiSticker({
     };
   });
   return (
-    <Animated.View style={{ top: -350 }}>
-      <GestureDetector gesture={doubleTapped}>
-        <Animated.Image
-          source={stickerSource}
-          resizeMethod="auto"
-          style={[imageStyle, { width: imageSize, height: imageSize }]}
-        />
-      </GestureDetector>
-    </Animated.View>
+    <GestureDetector gesture={drag}>
+      <Animated.View style={[containerStyle, { top: -250 }]}>
+        <GestureDetector gesture={doubleTapped}>
+          <Animated.Image
+            source={stickerSource}
+            resizeMethod="auto"
+            style={[imageStyle, { width: imageSize, height: imageSize }]}
+          />
+        </GestureDetector>
+      </Animated.View>
+    </GestureDetector>
   );
 }
